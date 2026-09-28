@@ -1,0 +1,32 @@
+{
+  "name": "flareclip-mv",
+  "private": true,
+  "type": "module",
+  "description": "FlareClip watercolor promo, painted with p5.brush and rendered in headless Chrome",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "bench": "node render.mjs --all --fmt=v --range=0,3 --out=out/bench.mp4",
+    "render:2min": "node render.mjs --all --edit=2min",
+    "render:60s": "node render.mjs --all --edit=60s",
+    "render:30s": "node render.mjs --all --edit=30s",
+    "render:15s": "node render.mjs --all --edit=15s"
+  },
+  "keywords": [
+    "p5js",
+    "creative-coding",
+    "generative-art",
+    "music-video",
+    "webgl",
+    "ffmpeg",
+    "puppeteer",
+    "video-rendering"
+  ],
+  "dependencies": {
+    "@fontsource/fredoka": "^5.0.0",
+    "@fontsource/permanent-marker": "^5.0.0",
+    "p5": "2.3.4",
+    "puppeteer-core": "^25.11.0"
+  }
+}

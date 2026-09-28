@@ -1,0 +1,67 @@
+{
+ "clipit-30s": {
+  "duration": 29.015,
+  "segments": [
+   {
+    "src_start": 5.271,
+    "src_end": 13.003,
+    "edit_start": 0
+   },
+   {
+    "src_start": 43.979,
+    "src_end": 59.466,
+    "edit_start": 7.692
+   },
+   {
+    "src_start": 166.394,
+    "src_end": 172.27,
+    "edit_start": 23.139
+   }
+  ]
+ },
+ "clipit-15s": {
+  "duration": 15.519,
+  "segments": [
+   {
+    "src_start": 42.028,
+    "src_end": 51.711,
+    "edit_start": 0
+   },
+   {
+    "src_start": 166.394,
+    "src_end": 172.27,
+    "edit_start": 9.643
+   }
+  ]
+ },
+ "clipit-60s": {
+  "duration": 60.031,
+  "segments": [
+   {
+    "src_start": 5.271,
+    "src_end": 59.466,
+    "edit_start": 0
+   },
+   {
+    "src_start": 166.394,
+    "src_end": 172.27,
+    "edit_start": 54.155
+   }
+  ]
+ },
+ "clipit-2min": {
+  "duration": 120.519,
+  "segments": [
+   {
+    "src_start": 5.271,
+    "src_end": 119.954,
+    "edit_start": 0
+   },
+   {
+    "src_start": 166.394,
+    "src_end": 172.27,
+    "edit_start": 114.643
+   }
+  ]
+ }
+}
