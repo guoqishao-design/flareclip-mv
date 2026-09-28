@@ -3,6 +3,14 @@
   "private": true,
   "type": "module",
   "description": "FlareClip watercolor promo, painted with p5.brush and rendered in headless Chrome",
+  "homepage": "https://flareclip.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guoqishao-design/flareclip-mv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/guoqishao-design/flareclip-mv/issues"
+  },
   "engines": {
     "node": ">=18"
   },

@@ -32,10 +32,14 @@ const run = (cmd, a) => new Promise((ok, bad) => { const p = spawn(cmd, a, { std
 const b64 = url => Buffer.from(url.slice(url.indexOf(',') + 1), 'base64');
 
 async function launch() {
+  const launchArgs = ['--allow-file-access-from-files', '--disable-background-networking', '--no-first-run',
+    '--disable-renderer-backgrounding', '--disable-background-timer-throttling', ...GPU_ARGS];
+  // Keep Chrome's sandbox enabled by default. --no-sandbox is intended only for
+  // trusted, isolated CI/container environments that cannot launch otherwise.
+  if (args['no-sandbox']) launchArgs.unshift('--no-sandbox');
   return puppeteer.launch({
     executablePath: CHROME, headless: args.headful ? false : true, protocolTimeout: 0,
-    args: ['--no-sandbox', '--allow-file-access-from-files', '--disable-background-networking', '--no-first-run',
-      '--disable-renderer-backgrounding', '--disable-background-timer-throttling', ...GPU_ARGS],
+    args: launchArgs,
   });
 }
 async function openPage(browser, fmt, extra = '') {

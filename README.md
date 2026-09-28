@@ -37,6 +37,8 @@ The renderer automatically looks for Google Chrome in its standard macOS and Win
 node render.mjs --all --edit=2min --chrome="/path/to/chrome"
 ```
 
+Chrome's sandbox remains enabled by default. Use `--no-sandbox` only inside a trusted, isolated CI or container environment when Chrome cannot launch otherwise.
+
 ## Quick start
 
 ```bash
@@ -109,6 +111,10 @@ The original rendering source code is available under the [MIT License](LICENSE)
 The FlareClip name and visual identity, Snip character, lyrics, soundtrack, preview images, and rendered videos are governed by [`ASSETS_LICENSE.md`](ASSETS_LICENSE.md) and are not included in the MIT grant. No trademark rights are granted.
 
 Third-party components retain their original licenses. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`vendor/p5.brush.LICENSE.md`](vendor/p5.brush.LICENSE.md).
+
+Please report security issues privately as described in [`SECURITY.md`](SECURITY.md). Do not include credentials, private media, or other sensitive information in a public issue.
+
+External contributions follow the zero-trust review requirements in [`CONTRIBUTING.md`](CONTRIBUTING.md). Pull-request code is not executed automatically.
 
 ## About FlareClip
 

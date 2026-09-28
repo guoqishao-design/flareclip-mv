@@ -1,0 +1,11 @@
+# Every change requires review by the repository owner.
+* @guoqishao-design
+
+# Treat executable code, dependencies, vendored code, and release automation as
+# especially sensitive review surfaces.
+/render.mjs @guoqishao-design
+/src/ @guoqishao-design
+/vendor/ @guoqishao-design
+/package.json @guoqishao-design
+/package-lock.json @guoqishao-design
+/.github/ @guoqishao-design
