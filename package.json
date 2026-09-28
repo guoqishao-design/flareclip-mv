@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "description": "FlareClip watercolor promo, painted with p5.brush and rendered in headless Chrome",
+  "author": "FlareClip <support@flareclip.com> (https://flareclip.com/)",
+  "license": "MIT",
   "homepage": "https://flareclip.com/",
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 
 [![FlareClip watercolor music video preview](preview/2min-horizontal.jpg)](https://flareclip.com/)
 
-An open-source, frame-by-frame watercolor music video rendered with p5.js, WebGL, Puppeteer, and FFmpeg. One square animation world produces both 9:16 vertical video and 16:9 horizontal video, with beat-aware motion and lyrics aligned to the recorded vocal.
+The official open-source FlareClip music-video project: a frame-by-frame watercolor animation rendered with p5.js, WebGL, Puppeteer, and FFmpeg. One square animation world produces both 9:16 vertical video and 16:9 horizontal video, with beat-aware motion and lyrics aligned to the recorded vocal.
 
 **[Turn long videos into short, shareable clips with FlareClip →](https://flareclip.com/)**
 
@@ -119,6 +119,8 @@ External contributions follow the zero-trust review requirements in [`CONTRIBUTI
 ## About FlareClip
 
 [FlareClip](https://flareclip.com/) turns long videos into short, shareable clips with viral titles, reframing, captions, and publishing tools.
+
+Copyright © 2026 FlareClip. The code and media have different licensing terms as described above.
 
 ---
 
