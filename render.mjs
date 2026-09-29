@@ -18,7 +18,7 @@ import os from 'node:os';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const fps = +(args.fps || 24), scale = +(args.scale || 1), edit = args.edit || '30s';
-const DUR = { '2min': 120.519, '60s': 58.528, '30s': 27.552, '15s': 15.501, full: 172.304 }[edit];
+const DUR = { '30s': 27.552, '15s': 15.501, '60s': 58.528, '2min': 120.519, full: 172.304 }[edit];
 const AUDIO = { '2min': 'assets/clipit-2min.mp3', '60s': 'assets/clipit-60s.mp3', '30s': 'assets/clipit-30s.mp3', '15s': 'assets/clipit-15s.mp3', full: 'assets/clipit.mp3' }[edit];
 
 const plat = os.platform();
