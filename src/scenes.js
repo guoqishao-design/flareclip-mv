@@ -55,18 +55,7 @@ function deskScene(S, o = {}) {
 
 // ======================= INTRO: "Three hours live… and nobody stayed" =======================
 
-// bars 2–3: the late-night stream. The clock spins, the viewer count drops, the tape of the stream piles up.
-shot(barAt(2), barAt(4), (S, lt, dur) => {
-  const z = kf(lt, [[0, 1.0], [dur, 1.14]]) * VZ, cy = kf(lt, [[0, 1000], [dur, 1030]]);
-  camBegin(VERT ? 1010 : 960, cy, z);
-  const viewers = [12, 9, 6, 4, 3, 3, 2, 1][Math.min(7, Math.floor(bpOf(S) - bpOf(barAt(2))))];
-  deskScene(S, { clock: 9 + lt * 1.6, viewers, eyes: lt < 2.4 ? 'open' : 'tired', mouth: 'flat', slump: seg(lt, 1.5, 3.5) * .5,
-    content: (sx, sy, w, h) => { for (let i = 0; i < 4; i++) paint(rrPts(sx + 30, sy + 100 + i * 36, 120 + hash(i) * 180, 18, 9), { wash: PAL.cream, washOp: 120 * (1 - seg(lt, i * .6, i * .6 + 1)), ink: null }); } });
-  // the stream's tape spills off the desk and snakes across the floor toward the camera
-  const path = [[1390, 990], [1450, 1120], [1400, 1290], [1150, 1380], [800, 1420], [520, 1520], [380, 1700], [520, 1880], [900, 1950]];
-  tape(subPath(path, .35 + .65 * easeOut(lt / dur)), 84, { labels: { every: 2, fmt: f => hms(f * 10800) } });
-  camEnd();
-});
+// bars 2–3: the cold-open hook lives in src/hook.js
 
 // bars 4–5: "nobody stayed". Close on the monitor (0 viewers, a tumbleweed), then pull back: the streamer nods off,
 // and Snip pops out of the corner of the monitor, determined.

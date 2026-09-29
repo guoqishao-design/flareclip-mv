@@ -4,7 +4,6 @@
 const SEC = { day2: 30, v2: 31, ch2: 43, brk: 51, bridge: 54, build: 57, final: 61 };
 
 // fractional bar → song time
-function barAtF(f) { const i = Math.floor(f); return lerp(barAt(i), barAt(i + 1), f - i); }
 // the seated/standing streamer's hand position (mirrors streamer() in chars.js; no slump)
 function handPos(x, y, s, ang, side, sit = true) {
   const hipY = sit ? 0 : -4.6 * s, shY = hipY - 4.8 * s, shx = side * 2.0 * s, a = side > 0 ? -ang : Math.PI + ang;

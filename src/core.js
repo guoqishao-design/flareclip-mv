@@ -242,10 +242,16 @@ function draw() {
   flushBrush();
   pop();
 }
+const GRADE = Q.get('grade') || 'contrast(1.16) saturate(1.25)';   // ?grade=none to compare
+let VIG = null;
 function composite() {
   const c = outX;
   c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1;
-  c.drawImage(drawingContext.canvas, 0, 0, W, H);
+  // colour grade: a touch more contrast and saturation so the watercolour reads punchier on a phone
+  c.filter = GRADE; c.drawImage(drawingContext.canvas, 0, 0, W, H); c.filter = 'none';
+  // soft vignette pulls the eye to the centre
+  if (!VIG) { VIG = document.createElement('canvas'); VIG.width = W; VIG.height = H; const v = VIG.getContext('2d'), g = v.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .35, W / 2, H / 2, Math.hypot(W, H) * .55); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(182,168,192,1)'); v.fillStyle = g; v.fillRect(0, 0, W, H); }
+  c.globalCompositeOperation = 'multiply'; c.drawImage(VIG, 0, 0); c.globalCompositeOperation = 'source-over';
   drawLetters(c);
   c.globalCompositeOperation = 'multiply'; c.drawImage(grainC, 0, 0);
   c.globalCompositeOperation = 'source-over';

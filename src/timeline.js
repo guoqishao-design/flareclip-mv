@@ -13,11 +13,63 @@ function editToSong(t) {
 const SHOTS = [];
 function shot(a, b, fn) { SHOTS.push({ a, b, fn }); SHOTS.sort((x, y) => x.a - y.a); }
 let MODEL = null;                                       // set by ?model=<name> for character sheets
+
+// Time warp: the shots were designed on a "design" bar grid; WARP says which design bars play during which real
+// bars of the song, so every shot lands on the line it illustrates (the lyric times come from the vocal alignment).
+// Each entry: [realFrom, realTo, designFrom, designTo, variant] in bars (fractions allowed). Bars map linearly.
+// A shot that is stretched or squeezed stays locked to the bar grid, so downbeats still land on downbeats.
+const WARP = [
+  [0, 2, 0, 2],             // (full MV only) title card
+  [2, 4, 2, 4],             // cold-open hook: 3 hours / 0 views → SNIP → 30 seconds / 24.8K
+  [4, 6.5, 4, 5],           // "Three hours live": the empty monitor, a tumbleweed
+  [6.5, 8, 5, 6],           // "…and nobody stayed": the streamer nods off, Snip pops out of the monitor
+  [8, 11, 0, 2],            // instrumental: the CLIP IT title card
+  [11, 14, 6, 9],           // "Went live at nine, went on and on"
+  [14, 15.5, 9, 12],        // "Said something genius, then it was gone"
+  [15.5, 17.2, 12, 15],     // "Buried at hour two, minute ten"
+  [17.2, 19.7, 15, 18],     // "Nobody's scrolling back again"
+  [19.7, 22.2, 18, 21],     // "The gold is in there, deep in the tape"
+  [22.2, 24, 21, 22],       // "It just needs a little help to escape": Snip winds up on the monitor
+  [24, 24.9, 22, 23],       // chorus 1: "Clip it, clip it (snip, snip)"
+  [24.9, 26, 23, 24],       //   "Cut it to the good bit"
+  [26, 26.8, 24, 25],       //   "Three hours in, thirty seconds out"
+  [26.8, 27.7, 25, 26],     //   "That's the part they talk about"
+  [27.7, 30, 26, 27],       //   "Clip it, clip it (snip, snip)"
+  [30, 31.3, 27, 28],       //   "Now the whole world's seen it"
+  [31.3, 32.6, 28, 30],     //   the full house
+  [32.6, 34, 30, 31],       // DAY 2
+  [34, 36.4, 31, 31.45],    // waiting to drop the file…
+  [36.4, 38.5, 31.45, 34],  // "Drop the stream in, grab a drink"
+  [38.5, 40.3, 34, 37],     // "Twenty clips back before you blink"
+  [40.3, 42.3, 37, 40],     // "Face in the frame, words that glow"
+  [42.3, 44.5, 40, 43],     // "Every language, ready to go"
+  [44.5, 45.85, 43, 44],    // chorus 2 (chorus-1 shots in the alternate colours, part2.js)
+  [45.85, 47.4, 44, 45],
+  [47.4, 49, 45, 46],
+  [49, 50.4, 46, 47],
+  [50.4, 51.2, 47, 48],
+  [51.2, 53, 48, 49.5],
+  [53, 54.9, 51, 54],       // instrumental break
+  [54.9, 58.6, 54, 57],     // "Long, long video? Let it go"
+  [58.6, 61, 57, 61],       // "Flare Clip, clip it, steal the show"
+  [61, 69, 22, 30],         // (full MV only) final choruses, until proper shots exist
+  [69, 77, 43, 51],
+  [77, 85, 22, 30],
+];
+function barAtF(f) { const i = Math.floor(f); return lerp(barAt(i), barAt(i + 1), f - i); }
+let REAL_S = 0;                                         // real song time of the frame being drawn
+function warpSong(S) {
+  const rb = barOf(S);
+  for (const [r0, r1, d0, d1] of WARP) if (rb >= r0 && rb < r1) return barAtF(d0 + (rb - r0) * (d1 - d0) / (r1 - r0));
+  return S;
+}
 function drawWorld(S) {
   if (MODEL) { MODEL(S); return; }
-  const sh = SHOTS.find(x => S >= x.a && S < x.b);
+  REAL_S = S;
+  const D = warpSong(S);
+  const sh = SHOTS.find(x => D >= x.a && D < x.b);
   if (!sh) { frameWash(PAL.paper); return; }
-  sh.fn(S, S - sh.a, sh.b - sh.a);
+  sh.fn(D, D - sh.a, sh.b - sh.a);
   CAM = null;
 }
 
