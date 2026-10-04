@@ -17,7 +17,7 @@ let MODEL = null;                                       // set by ?model=<name> 
 // Time warp: the shots were designed on a "design" bar grid; WARP says which design bars play during which real
 // bars of the song, so every shot lands on the line it illustrates (the lyric times come from the vocal alignment).
 // Each entry: [realFrom, realTo, designFrom, designTo, variant] in bars (fractions allowed). Bars map linearly.
-// A shot that is stretched or squeezed stays locked to the bar grid, so downbeats still land on downbeats.
+// Shot progress uses design time. Beat-driven motion must use REAL_S, because warping changes beat phase.
 const WARP = [
   [0, 2, 0, 2],             // (full MV only) title card
   [2, 4, 2, 4],             // cold-open hook: 3 hours / 0 views → SNIP → 30 seconds / 24.8K
@@ -64,8 +64,8 @@ function warpSong(S) {
   return S;
 }
 function drawWorld(S) {
-  if (MODEL) { MODEL(S); return; }
   REAL_S = S;
+  if (MODEL) { MODEL(S); return; }
   const D = warpSong(S);
   const sh = SHOTS.find(x => D >= x.a && D < x.b);
   if (!sh) { frameWash(PAL.paper); return; }
@@ -79,6 +79,14 @@ function lyric(t0, t1, text) { LYRICS.push({ t0, t1, text }); }
 
 function drawOverlay(c, S) {
   karaoke(c, S);
+  // The song is a fictional creator story, not a promise about plan limits or view counts.
+  if (S >= 72.1 && S < 87) {
+    c.save(); c.scale(SCALE, SCALE); c.font = '600 28px "Fredoka"'; c.textAlign = 'center';
+    const label = 'Animated story · clip limits vary by plan', y = FMT === 'v' ? 200 : 75;
+    const width = c.measureText(label).width + 40;
+    c.fillStyle = 'rgba(42,34,48,.85)'; c.beginPath(); c.roundRect(FW / 2 - width / 2, y - 30, width, 44, 12); c.fill();
+    c.fillStyle = PAL.cream; c.fillText(label, FW / 2, y); c.restore();
+  }
   if (window.endCard) window.endCard(c, S);
 }
 function karaoke(c, S) {

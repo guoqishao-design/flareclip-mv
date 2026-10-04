@@ -39,7 +39,7 @@ shot(barAt(2), barAt(4), (S, lt, dur) => {
   const shake = shakeXY(S, 16 * Math.exp(-(S - b1) * 9) * (S > b1) + 22 * Math.exp(-(S - b2) * 9) * (S > b2));
   camBegin(960 + shake[0], 960 + shake[1], kf(lt, [[0, 1.08], [dur, 1.0]]));
   const open = easeOut(seg(S, b2 + .05, b3 + .1)), R = hookRegions((1 - open) * 1400);
-  const Bc = VERT ? [960, 1510] : [1450, 960];
+  const Bc = VERT ? [930, 1410] : [1450, 960];
   frameWash(DULL.bg);
   if (open > 0) {
     paint(R.B, { wash: PAL.gold, ink: null });
@@ -89,17 +89,18 @@ shot(barAt(2), barAt(4), (S, lt, dur) => {
       }
       const views = Math.round(24800 * easeOut(seg(S, b3 + .1, c2)));
       const cnt = views >= 1000 ? (views / 1000).toFixed(1) + 'K' : String(views);
-      const lx = VERT ? 960 : Bc[0], ly = VERT ? 1850 : 1400, ty = VERT ? 1190 : 520;
+      const lx = VERT ? 930 : Bc[0], ly = VERT ? 1630 : 1340, ty = VERT ? 1120 : 540;
       letter('30 SECONDS', lx, ty, 70, PAL.ink, { font: '700 70px "Fredoka"', shadow: false, stroke: PAL.cream, pop: seg(S, b3, b3 + .2) * 1.1 });
       paint(rrPts(lx - 230, ly - 62, 460, 124, 62), { wash: PAL.cream, ink: PAL.ink, sw: 1.4 });
-      paint(heartPts(lx - 150, ly, 34 * (1 + .3 * pulse(S, 5))), { wash: PAL.red, ink: PAL.ink, sw: .9 });
-      letter(cnt, lx + 40, ly + 2, 80 * (1 + .08 * pulse(S, 6)), PAL.red, { font: '700 80px "Fredoka"', shadow: false });
+      paint(heartPts(lx - 150, ly, 34 * (1 + .3 * pulse(REAL_S, 5))), { wash: PAL.red, ink: PAL.ink, sw: .9 });
+      letter(cnt, lx + 40, ly + 2, 80 * (1 + .08 * pulse(REAL_S, 6)), PAL.red, { font: '700 80px "Fredoka"', shadow: false });
+      letter('ILLUSTRATIVE VIEWS', lx, ly + 92, 30, PAL.ink, { font: '600 30px "Fredoka"', shadow: false, stroke: PAL.cream });
     }
     // fans popping up along the bright edge
     const fans = seg(S, c0, c0 + .4);
     if (fans > 0) {
-      const rows = VERT ? [[480, 1920], [700, 1940], [1220, 1940], [1440, 1920]] : [[1080, 1520], [1260, 1540], [1640, 1540], [1830, 1520]];
-      rows.forEach(([x, y], i) => { const k = backOut(seg(S, c0 + i * .07, c0 + i * .07 + .3)); if (k > .02) fan(x, y, 13 * k, { seed: 140 + i, aL: 1.2 + .3 * Math.sin(S * 8 + i), aR: 1.3, eyes: ['star', 'heart'][i % 2], mouth: 'open', hop: Math.abs(Math.sin((bpOf(S) + i * .3) * Math.PI)) * .6 }); });
+      const rows = VERT ? [[510, 1770], [700, 1790], [1190, 1790], [1360, 1770]] : [[1080, 1480], [1260, 1490], [1640, 1490], [1830, 1480]];
+      rows.forEach(([x, y], i) => { const k = backOut(seg(S, c0 + i * .07, c0 + i * .07 + .3)); if (k > .02) fan(x, y, 13 * k, { seed: 140 + i, aL: 1.2 + .3 * Math.sin(S * 8 + i), aR: 1.3, eyes: ['star', 'heart'][i % 2], mouth: 'open', hop: Math.abs(Math.sin((bpOf(REAL_S) + i * .3) * Math.PI)) * .6 }); });
       confetti(S, c0, 40, VERT ? [420, 900, 1080, 1000] : [950, 300, 970, 1300]);
     }
     // the slash: a bright streak along the cut line, then a clean ink edge
@@ -112,7 +113,7 @@ shot(barAt(2), barAt(4), (S, lt, dur) => {
     const jk = seg(S, b1 - .15, b2), from = VERT ? [1700, 300] : [1500, 200], at = [960, 960];
     const x = lerp(from[0], at[0], easeOut(jk)), y = lerp(from[1], at[1], easeOut(jk)) - Math.sin(jk * Math.PI) * 120;
     const closing = S > b2 && S < b2 + .16;
-    snip(x, y + 110, 20, { eyes: 'determined', mouth: closing ? 'open' : 'grin', aL: 1.1, aR: 1.1, cutL: closing ? 0 : 1, cutR: closing ? 0 : 1, glow: .8, sq: closing ? .25 : -.15 * pulse(S, 6), rot: VERT ? -.06 : .1 });
+    snip(x, y + 110, 20, { eyes: 'determined', mouth: closing ? 'open' : 'grin', aL: 1.1, aR: 1.1, cutL: closing ? 0 : 1, cutR: closing ? 0 : 1, glow: .8, sq: closing ? .25 : -.15 * pulse(REAL_S, 6), rot: VERT ? -.06 : .1 });
     if (S > b2) { sparks(960, 960, S - b2, 14, 260); sfx('SNIP!', VERT ? 700 : 1180, VERT ? 800 : 700, 150, PAL.flame, S - b2, { life: .9, rot: -.12 }); }
   }
   camEnd();

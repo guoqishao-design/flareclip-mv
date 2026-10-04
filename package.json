@@ -14,9 +14,10 @@
     "url": "https://github.com/guoqishao-design/flareclip-mv/issues"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.12.0"
   },
   "scripts": {
+    "test": "node --test test/*.test.mjs",
     "bench": "node render.mjs --all --fmt=v --range=0,3 --out=out/bench.mp4",
     "render:2min": "node render.mjs --all --edit=2min",
     "render:60s": "node render.mjs --all --edit=60s",

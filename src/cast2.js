@@ -113,8 +113,8 @@ function fan(x, y, s, o = {}) {
 function fanRow(S, x0, x1, y, s, n, seed = 0, o = {}) {
   for (let i = 0; i < n; i++) {
     const id = seed + i, x = lerp(x0, x1, (i + .5) / n) + (hash(id + 1) - .5) * 30, ph = hash(id + 2);
-    const hop = Math.abs(Math.sin((bpOf(S) + ph * .5) * Math.PI)) * (o.hop ?? .5);
-    const up = o.cheer ? 1.1 + .4 * Math.sin(bpOf(S) * Math.PI + ph * 6) : -1.1;
+    const hop = Math.abs(Math.sin((bpOf(REAL_S) + ph * .5) * Math.PI)) * (o.hop ?? .5);
+    const up = o.cheer ? 1.1 + .4 * Math.sin(bpOf(REAL_S) * Math.PI + ph * 6) : -1.1;
     fan(x, y, s * (.9 + hash(id + 3) * .2), { seed: id, hop, aL: o.cheer ? up : -1.1, aR: o.cheer ? 2.2 - up : (o.phone ? .9 : -1.1), phone: o.phone, eyes: o.eyes || ['happy', 'dot', 'star', 'heart'][id % 4], mouth: o.mouth || (id % 3 ? 'open' : 'smile'), flip: id % 2 === 1 });
   }
 }
@@ -127,7 +127,7 @@ function ambient(S, kind, area, n = 20, o = {}) {
     const sp = o.speed ?? 30, h1 = hash(i * 1.7 + 3), h2 = hash(i * 2.3 + 7), h3 = hash(i * 3.1 + 11);
     const y = ay + ah - frac(h2 + S * sp * (.5 + h3) / ah) * ah, x = ax + h1 * aw + Math.sin(S * (.6 + h3) + i) * 30;
     if (kind === 'dust') paint(ellPts(x, y, 4 + h3 * 4, 4 + h3 * 4, 8), { wash: PAL.flameLt, washOp: 90 + 100 * Math.sin(S * 2 + i) ** 2, ink: null });
-    else if (kind === 'sparkle') { const tw = pulse(S + h1 * 2, 3); paint(starPts(ax + h1 * aw, ay + h2 * ah, (8 + 12 * h3) * (.5 + tw), .38, 4, S * .5 + i), { wash: o.col || PAL.cream, washOp: 140 + 115 * tw, ink: null }); }
+    else if (kind === 'sparkle') { const tw = pulse(REAL_S + h1 * 2, 3); paint(starPts(ax + h1 * aw, ay + h2 * ah, (8 + 12 * h3) * (.5 + tw), .38, 4, S * .5 + i), { wash: o.col || PAL.cream, washOp: 140 + 115 * tw, ink: null }); }
     else if (kind === 'bokeh') paint(ellPts(ax + h1 * aw + Math.sin(S * .3 + i) * 40, ay + h2 * ah, 30 + 50 * h3, 30 + 50 * h3, 20), { fill: o.cols ? o.cols[i % o.cols.length] : PAL.cream, fillOp: 50 + 30 * Math.sin(S + i) ** 2, bleed: .3, tex: .2, border: .1, ink: null });
     else if (kind === 'float') {
       const g = (o.glyphs || ['heart', 'star', 'note'])[i % (o.glyphs || ['heart', 'star', 'note']).length], r = 14 + h3 * 14, c = o.cols ? o.cols[i % o.cols.length] : PAL.rose;
@@ -177,7 +177,7 @@ function roomDecor(S, o = {}) {
   const path = []; for (let i = 0; i <= bulbs; i++) { const f = i / bulbs; path.push([60 + f * 1800, 250 + Math.sin(f * Math.PI * 3) * 40 + 20]); }
   inkLine(path, .9, PAL.ink, 'inkfine', .5);
   for (let i = 1; i < bulbs; i++) {
-    const [bx, by] = path[i], on = night * (.55 + .45 * pulse(S + i * .11, 3));
+    const [bx, by] = path[i], on = night * (.55 + .45 * pulse(REAL_S + i * .11, 3));
     if (on > .05) paint(ellPts(bx, by + 22, 34, 34, 14), { fill: [PAL.gold, PAL.rose, PAL.sky, PAL.flameLt][i % 4], fillOp: 90 * on, bleed: .3, tex: .2, border: .1, ink: null });
     paint(ellPts(bx, by + 20, 9, 13, 10), { wash: on > .05 ? [PAL.gold, PAL.rose, PAL.sky, PAL.flameLt][i % 4] : '#CFC6B8', ink: PAL.ink, sw: .6 });
   }
@@ -191,7 +191,7 @@ function deskDecor(S, o = {}) {
 function deskTop(S, o = {}) {
   // keyboard and mouse in front of the monitor
   paint(rrPts(890, 1044, 190, 24, 8), { wash: '#3B3549', ink: PAL.ink, sw: .8 });
-  for (let i = 0; i < 8; i++) paint(rectPts(900 + i * 22, 1049, 15, 7), { wash: (o.rgb ? [PAL.rose, PAL.gold, PAL.sky, PAL.leaf][(i + Math.floor(bpOf(S))) % 4] : '#8D8A96'), washOp: 220, ink: null });
+  for (let i = 0; i < 8; i++) paint(rectPts(900 + i * 22, 1049, 15, 7), { wash: (o.rgb ? [PAL.rose, PAL.gold, PAL.sky, PAL.leaf][(i + Math.floor(bpOf(REAL_S))) % 4] : '#8D8A96'), washOp: 220, ink: null });
   // mug
   if (!o.noMug) { paint(rrPts(1400, 1020, 40, 50, 8), { wash: PAL.teal, ink: PAL.ink, sw: .8 }); inkLine([[1440, 1030], [1452, 1040], [1440, 1055]], .9); }
 }

@@ -14,7 +14,7 @@ function room(S, o = {}) {
   if (o.window !== false) {
     const wx = o.winX ?? 520, wy = o.winY ?? 300;
     paint(rrPts(wx, wy, 360, 300, 16), { wash: '#141A3A', ink: PAL.ink, sw: 1.2 });
-    for (let i = 0; i < 9; i++) paint(starPts(wx + 30 + hash(i) * 300, wy + 30 + hash(i + 9) * 240, 7 + hash(i + 3) * 6, .4, 4), { wash: PAL.cream, washOp: 150 + 100 * pulse(S + i * .13, 3), ink: null });
+    for (let i = 0; i < 9; i++) paint(starPts(wx + 30 + hash(i) * 300, wy + 30 + hash(i + 9) * 240, 7 + hash(i + 3) * 6, .4, 4), { wash: PAL.cream, washOp: 150 + 100 * pulse(REAL_S + i * .13, 3), ink: null });
     paint(ellPts(wx + 280, wy + 80, 38, 38, 20), { wash: '#F6E7B5', ink: null });
     paint(ellPts(wx + 296, wy + 70, 34, 34, 20), { wash: '#141A3A', ink: null });
     inkLine([[wx + 180, wy], [wx + 180, wy + 300]], 1.1); inkLine([[wx, wy + 150], [wx + 360, wy + 150]], 1.1);
@@ -50,7 +50,7 @@ function monitor(x, y, w, h, o = {}) {
   if (o.content) o.content(sx, sy, w, h);
   if (o.live) {
     paint(rrPts(sx + 22, sy + 20, 150, 52, 14), { wash: PAL.red, ink: PAL.ink, sw: .9 });
-    paint(ellPts(sx + 50, sy + 46, 10, 10, 10), { wash: PAL.cream, washOp: 120 + 135 * pulse(S, 2), ink: null });
+    paint(ellPts(sx + 50, sy + 46, 10, 10, 10), { wash: PAL.cream, washOp: 120 + 135 * pulse(REAL_S, 2), ink: null });
     letter('LIVE', sx + 112, sy + 47, 30, PAL.cream, { font: '700 30px "Fredoka"', shadow: false });
   }
   if (o.viewers != null) {
@@ -172,7 +172,7 @@ function machine(x, y, s, crank, o = {}) {
   inkLine([[cx, cy], [hx, hy]], 2.4, PAL.ink, 'ink', 0);
   paint(rrPts(hx - 14 * s, hy - 30 * s, 28 * s, 60 * s, 12 * s), { wash: PAL.red, ink: PAL.ink, sw: 1 });
   // puff lights on the top
-  for (let i = 0; i < 3; i++) paint(ellPts(x - 60 * s + i * 60 * s, y - 250 * s, 14 * s, 14 * s, 10), { wash: [PAL.gold, PAL.rose, PAL.leaf][i], washOp: 140 + 115 * pulse(S + i * BEAT / 3, 5), ink: PAL.ink, sw: .8 });
+  for (let i = 0; i < 3; i++) paint(ellPts(x - 60 * s + i * 60 * s, y - 250 * s, 14 * s, 14 * s, 10), { wash: [PAL.gold, PAL.rose, PAL.leaf][i], washOp: 140 + 115 * pulse(REAL_S + i * BEAT / 3, 5), ink: PAL.ink, sw: .8 });
 }
 
 // ---------- the world ----------
@@ -200,7 +200,7 @@ function seats(x, y, cols, rows, fill, S) {
     for (let c = 0; c < cols; c++) {
       const xx = x + (c - (cols - 1) / 2) * 140 * sc + off, id = r * 31 + c;
       if (hash(id + 7) < fill) {
-        const bounce = -Math.abs(Math.sin((bpOf(S) + hash(id)) * Math.PI)) * 18 * fill;
+        const bounce = -Math.abs(Math.sin((bpOf(REAL_S) + hash(id)) * Math.PI)) * 18 * fill;
         const hs = 30 * sc, hy = yy - 70 * sc + bounce;
         if (hash(id + 3) < .5) {
           // a tiny flame fan: one shape, two eyes

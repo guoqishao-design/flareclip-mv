@@ -37,7 +37,7 @@ shot(barAt(SEC.day2), barAt(SEC.v2), (S, lt, dur) => {
   if (circ > 0) { const pts = []; for (let i = 0; i <= 30 * circ; i++) { const a = -2 + i / 30 * TAU * 1.05; pts.push([cx + Math.cos(a) * 170, cy + 60 + Math.sin(a) * 190]); } if (pts.length > 2) inkLine(pts, 2.2, PAL.red, 'ink', .5); }
   ambient(S, 'sparkle', null, 14, { col: PAL.gold });
   cat(cx - 360, 1300, 11, { pose: 'sit', eyes: flip > .5 ? 'wide' : 'open', lookX: .6, tail: 1 });
-  snip(cx + 360, 1300, 15, { eyes: 'happy', mouth: 'grin', aL: 1.2, aR: .2, cutL: .8, cutR: .8, dy: -.4 * Math.abs(Math.sin(bpOf(S) * Math.PI)), flip: true });
+  snip(cx + 360, 1300, 15, { eyes: 'happy', mouth: 'grin', aL: 1.2, aR: .2, cutL: .8, cutR: .8, dy: -.4 * Math.abs(Math.sin(bpOf(REAL_S) * Math.PI)), flip: true });
   camEnd();
 });
 
@@ -84,8 +84,8 @@ shot(barAt(SEC.v2), barAt(SEC.v2 + 3), (S, lt, dur) => {
     for (let i = 0; i < 2; i++) inkLine([[hx + 10 + i * 22, hy - 85], [hx + 2 + i * 22, hy - 110 - 10 * wob(S, 1, i / 2)], [hx + 12 + i * 22, hy - 135]], .8, PAL.grey, 'inkfine', .6);
   }
   // Snip on the monitor, snipping on every eighth note while it works
-  const busy = S > drop && !done, cut = busy && frac(bpOf(S) * 2) < .3;
-  snip(1300, 820, 13, { eyes: done ? 'happy' : 'determined', mouth: 'grin', aL: busy ? .9 : 1.3, aR: busy ? .9 : 1.3, cutL: cut ? 0 : 1, cutR: cut ? 0 : 1, glow: busy ? .5 : .2, sq: -.1 * pulse2(S, 8) });
+  const busy = S > drop && !done, cut = busy && frac(bpOf(REAL_S) * 2) < .3;
+  snip(1300, 820, 13, { eyes: done ? 'happy' : 'determined', mouth: 'grin', aL: busy ? .9 : 1.3, aR: busy ? .9 : 1.3, cutL: cut ? 0 : 1, cutR: cut ? 0 : 1, glow: busy ? .5 : .2, sq: -.1 * pulse2(REAL_S, 8) });
   camEnd();
 });
 
@@ -115,13 +115,13 @@ shot(barAt(SEC.v2 + 3), barAt(SEC.v2 + 6), (S, lt, dur) => {
   let shown = 0;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
     const i = r * cols + c, t0 = open + i * .04, k = seg(S, t0, t0 + .25); if (k <= 0) continue; shown++;
-    clipCard(x0 + c * dx, y0 + r * dy + 6 * wob(S, .8, i / 7), ch * backOut(k), .06 * (hash(i) - .5), { bg: [PAL.sky, PAL.rose, PAL.gold, PAL.leaf, PAL.lilac, PAL.flameLt][i % 6], play: true, glow: pulse(S + i * .03, 4) * .5 });
+    clipCard(x0 + c * dx, y0 + r * dy + 6 * wob(S, .8, i / 7), ch * backOut(k), .06 * (hash(i) - .5), { bg: [PAL.sky, PAL.rose, PAL.gold, PAL.leaf, PAL.lilac, PAL.flameLt][i % 6], play: true, glow: pulse(REAL_S + i * .03, 4) * .5 });
   }
   const cx = VERT ? 960 : 330, cy = VERT ? 200 : 960;
   paint(rrPts(cx - 170, cy - 80, 340, 160, 50), { wash: PAL.cream, ink: PAL.ink, sw: 1.3 });
-  letter(String(shown), cx, cy - 10, 96, PAL.flame, { font: '700 96px "Fredoka"', shadow: false, pop: pulse(S, 5) * .3 + 1 });
+  letter(String(shown), cx, cy - 10, 96, PAL.flame, { font: '700 96px "Fredoka"', shadow: false, pop: pulse(REAL_S, 5) * .3 + 1 });
   letter('clips', cx, cy + 52, 34, PAL.ink, { font: '700 34px "Fredoka"', shadow: false });
-  snip(VERT ? 1320 : 330, VERT ? 1700 : 1330, 13, { eyes: 'star', mouth: 'open', aL: 1.3, aR: 1.3, cutL: .5, cutR: .5, dy: -.5 * Math.abs(Math.sin(bpOf(S) * Math.PI)) });
+  snip(VERT ? 1320 : 330, VERT ? 1700 : 1330, 13, { eyes: 'star', mouth: 'open', aL: 1.3, aR: 1.3, cutL: .5, cutR: .5, dy: -.5 * Math.abs(Math.sin(bpOf(REAL_S) * Math.PI)) });
   camEnd();
 });
 
@@ -137,7 +137,7 @@ function bigClip(S, o) {
   paint(rrPts(cx - w / 2, top, w, h, 40), { wash: o.screen || PAL.sky, ink: null });
   // the streamer, big, swaying
   const sway = 60 * wob(S, .45), s = 56, hx = cx + sway, feetY = 780 + 11.8 * s;
-  streamer(hx, feetY, s, { eyes: o.eyes || 'happy', mouth: o.mouth || (frac(S * 4) < .5 ? 'o' : 'grin'), aL: -.9 + .35 * pulse(S, 3), aR: -.75 });
+  streamer(hx, feetY, s, { eyes: o.eyes || 'happy', mouth: o.mouth || (frac(S * 4) < .5 ? 'o' : 'grin'), aL: -.9 + .35 * pulse(REAL_S, 3), aR: -.75 });
   // hide what spills out below the card, then the frame
   paint(rectPts(cx - w / 2 - 40, bot + 16, w + 80, 700), { wash: BG, ink: null });
   paint(rrPts(cx - w / 2 - 16, bot - 40, w + 32, 56, 16), { wash: '#26222F', ink: null });
@@ -147,7 +147,7 @@ function bigClip(S, o) {
   for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) inkLine([[fx + sx * b, fy + sy * b - sy * L], [fx + sx * b, fy + sy * b], [fx + sx * b - sx * L, fy + sy * b]], 2.4, PAL.gold, 'ink', 0);
   // two viewers watching on their phones
   const FP = VERT ? [[545, 1800, 10], [1375, 1800, 10]] : [[330, 1420, 14], [1600, 1420, 14]];
-  FP.forEach(([x, y, fs], i) => fan(x, y, fs, { seed: 50 + i, phone: true, aR: .9, aL: -1.1, eyes: ['heart', 'star'][i], mouth: 'open', hop: Math.abs(Math.sin((bpOf(S) + i * .5) * Math.PI)) * .3, flip: i === 1 }));
+  FP.forEach(([x, y, fs], i) => fan(x, y, fs, { seed: 50 + i, phone: true, aR: .9, aL: -1.1, eyes: ['heart', 'star'][i], mouth: 'open', hop: Math.abs(Math.sin((bpOf(REAL_S) + i * .5) * Math.PI)) * .3, flip: i === 1 }));
   return { cx, cy, w, h, top, bot };
 }
 shot(barAt(SEC.v2 + 6), barAt(SEC.v2 + 9), (S, lt, dur) => {
@@ -163,13 +163,13 @@ shot(barAt(SEC.v2 + 6), barAt(SEC.v2 + 9), (S, lt, dur) => {
     const ws = line.map(w => textW(w, font(64))), gap = 22, total = ws.reduce((a, b) => a + b, 0) + gap * (line.length - 1);
     let x = C.cx - total / 2;
     line.forEach((w, j) => {
-      const on = k <= cur, now = k === cur, sz = now ? 64 * (1 + .25 * pulse(S, 5)) : 64;
+      const on = k <= cur, now = k === cur, sz = now ? 64 * (1 + .25 * pulse(REAL_S, 5)) : 64;
       letter(w, x + ws[j] / 2, C.bot - 205 + li * 80, sz, on ? (now ? PAL.gold : PAL.cream) : '#8C8499', { font: font(Math.round(sz)), shadow: false });
       x += ws[j] + gap; k++;
     });
   });
-  if (cur >= 0) paint(ellPts(C.cx, C.bot - 170, 260, 110, 24), { fill: PAL.gold, fillOp: 60 * pulse(S, 3), bleed: .3, tex: .2, border: .1, ink: null });
-  snip(VERT ? 1330 : 1340, 1400, 14, { eyes: 'happy', mouth: 'grin', aL: 1.3, aR: .3, cutL: .6, cutR: .9, lookX: -.6, dy: -.3 * pulse(S, 5) });
+  if (cur >= 0) paint(ellPts(C.cx, C.bot - 170, 260, 110, 24), { fill: PAL.gold, fillOp: 60 * pulse(REAL_S, 3), bleed: .3, tex: .2, border: .1, ink: null });
+  snip(VERT ? 1330 : 1340, 1400, 14, { eyes: 'happy', mouth: 'grin', aL: 1.3, aR: .3, cutL: .6, cutR: .9, lookX: -.6, dy: -.3 * pulse(REAL_S, 5) });
   camEnd();
 });
 
@@ -183,7 +183,7 @@ shot(barAt(SEC.v2 + 9), barAt(SEC.v2 + 12), (S, lt, dur) => {
   const C = bigClip(S, { bg: '#CFE3EE', screen: PAL.rose, eyes: 'happy', mouth: 'grin' });
   const bi = Math.max(0, Math.floor(bpOf(S) - bpOf(barAt(b0))));
   paint(rrPts(C.cx - C.w / 2 + 20, C.bot - 230, C.w - 40, 120, 30), { wash: '#1F1B28', washOp: 170, ink: null });
-  letter(READY[bi % READY.length], C.cx, C.bot - 168, 60 * (1 + .15 * pulse(S, 6)), PAL.gold, { font: `700 60px "Fredoka", "Hiragino Sans", "PingFang SC", "Noto Sans CJK SC", sans-serif`, shadow: false });
+  letter(READY[bi % READY.length], C.cx, C.bot - 168, 60 * (1 + .15 * pulse(REAL_S, 6)), PAL.gold, { font: `700 60px "Fredoka", "Hiragino Sans", "PingFang SC", "Noto Sans CJK SC", sans-serif`, shadow: false });
   // language tags around the clip
   const TP = VERT ? [[560, 420], [1360, 470], [540, 760], [1380, 820], [560, 1120], [1370, 1170], [620, 1480], [1300, 1520], [960, 300], [960, 1640]]
     : [[330, 420], [1590, 440], [260, 760], [1660, 780], [330, 1100], [1590, 1120], [560, 1380], [1360, 1400], [640, 260], [1280, 260]];
@@ -216,9 +216,9 @@ shot(barAt(SEC.v2 + 9), barAt(SEC.v2 + 12), (S, lt, dur) => {
 shot(barAt(SEC.brk), barAt(SEC.bridge), (S, lt, dur) => {
   const b0 = SEC.brk, hype = seg(S, barAt(b0 + 1) - .1, barAt(b0 + 1) + .1);
   camBegin(960, 980, kf(lt, [[0, 1.25], [dur, 1.0]]));
-  const cols = [PAL.rose, PAL.gold, PAL.teal, PAL.lilac], bi = Math.floor(bpOf(S));
+  const cols = [PAL.rose, PAL.gold, PAL.teal, PAL.lilac], bi = Math.floor(bpOf(REAL_S));
   frameWash(hype > 0 ? mixCol('#20183A', cols[((bi % 4) + 4) % 4], .55 * hype) : '#20183A');
-  for (const [x, c] of [[560, PAL.gold], [1360, PAL.rose]]) if (hype > 0) paint([[x - 50, -200], [x + 50, -200], [960 + (x - 960) * .2 + 300, 1400], [960 + (x - 960) * .2 - 300, 1400]], { fill: c, fillOp: 80 * hype * (.5 + .5 * pulse(S, 3)), bleed: .25, tex: .2, border: .1, ink: null });
+  for (const [x, c] of [[560, PAL.gold], [1360, PAL.rose]]) if (hype > 0) paint([[x - 50, -200], [x + 50, -200], [960 + (x - 960) * .2 + 300, 1400], [960 + (x - 960) * .2 - 300, 1400]], { fill: c, fillOp: 80 * hype * (.5 + .5 * pulse(REAL_S, 3)), bleed: .25, tex: .2, border: .1, ink: null });
   paint([[900, -200], [1020, -200], [1260, 1420], [660, 1420]], { fill: PAL.cream, fillOp: 90, bleed: .25, tex: .2, border: .1, ink: null });
   paint(ellPts(960, 1400, 380, 70, 24), { wash: PAL.cream, washOp: 120, ink: null });
   // raining clips
@@ -228,8 +228,8 @@ shot(barAt(SEC.brk), barAt(SEC.bridge), (S, lt, dur) => {
     if (y < 2100) clipCard(x, y, 170, a * (hash(i + 4) - .5) * 4, { bg: [PAL.sky, PAL.rose, PAL.gold, PAL.leaf, PAL.lilac][i % 5], play: true });
   }
   if (hype > 0) { ambient(S, 'sparkle', null, 16); fanRow(S, VERT ? 450 : 150, VERT ? 1470 : 1770, 1580, VERT ? 10 : 12, VERT ? 6 : 10, 100, { cheer: true, hop: .7 }); }
-  const hop = hype > 0 ? Math.abs(Math.sin(bpOf(S) * Math.PI)) : .3 * Math.abs(Math.sin(bpOf(S) * Math.PI / 2));
-  const closing = hype > 0 && frac(bpOf(S) * 2) < .25;
+  const hop = hype > 0 ? Math.abs(Math.sin(bpOf(REAL_S) * Math.PI)) : .3 * Math.abs(Math.sin(bpOf(REAL_S) * Math.PI / 2));
+  const closing = hype > 0 && frac(bpOf(REAL_S) * 2) < .25;
   snip(960, 1400 - hop * 90, 22, { eyes: hype > 0 ? (hop > .5 ? 'star' : 'happy') : 'closed', mouth: hype > 0 ? 'open' : 'smile', aL: hype > 0 ? 1.3 : -.4, aR: hype > 0 ? 1.3 : -.4, cutL: closing ? 0 : 1, cutR: closing ? 0 : 1, sq: .2 * (1 - hop) - .1, glow: .3 + .5 * hype });
   camEnd();
 });
@@ -244,7 +244,7 @@ shot(barAt(SEC.bridge), barAt(SEC.build), (S, lt, dur) => {
   paint(rectPts(-300, -800, 2520, 1300), { wash: '#9C86C9', washOp: 200, ink: null });
   paint(rectPts(-300, 300, 2520, 700), { fill: '#F2A07B', fillOp: 140, bleed: .35, tex: .5, border: .2, ink: null });
   paint(ellPts(1350, 1080, 120, 120, 26), { wash: '#FFD9A0', washOp: 230, ink: null });
-  for (let i = 0; i < 14; i++) paint(starPts(hash(i) * 1920, -200 + hash(i + 40) * 700, 6 + hash(i + 3) * 6, .4, 4), { wash: PAL.cream, washOp: 90 + 120 * pulse(S + i * .1, 2), ink: null });
+  for (let i = 0; i < 14; i++) paint(starPts(hash(i) * 1920, -200 + hash(i + 40) * 700, 6 + hash(i + 3) * 6, .4, 4), { wash: PAL.cream, washOp: 90 + 120 * pulse(REAL_S + i * .1, 2), ink: null });
   // clouds drifting, birds
   for (let i = 0; i < 4; i++) cloud(frac(hash(i) + S * .012 * (1 + i * .3)) * 2400 - 240, 260 + i * 130, 220 + hash(i + 2) * 160, '#F8E3D6', 200);
   for (let i = 0; i < 4; i++) bird(frac(hash(i + 9) + S * .03) * 2200 - 140, 520 + 60 * Math.sin(S * .5 + i) + i * 40, 22, S * 9 + i);
@@ -272,7 +272,7 @@ shot(barAt(SEC.bridge), barAt(SEC.build), (S, lt, dur) => {
 // out on the beats, Snip grows and glows, the crowd rises, and it all flares white-gold on the last beat.
 shot(barAt(SEC.build), barAt(SEC.final), (S, lt, dur) => {
   const b0 = SEC.build, flare = seg(S, BB(b0 + 3, 2), barAt(b0 + 4));
-  camBegin(960, kf(lt, [[0, 1050], [dur, 960]]), kf(lt, [[0, 1.2], [dur, 1.0]]) * (1 + .03 * barPulse(S, 6)));
+  camBegin(960, kf(lt, [[0, 1050], [dur, 960]]), kf(lt, [[0, 1.2], [dur, 1.0]]) * (1 + .03 * barPulse(REAL_S, 6)));
   frameWash('#191531');
   for (let i = 0; i < 4; i++) {
     const x = 300 + i * 440, sw = .35 * Math.sin(S * 1.3 + i * 1.7), c = [PAL.gold, PAL.rose, PAL.teal, PAL.flameLt][i];
@@ -292,8 +292,8 @@ shot(barAt(SEC.build), barAt(SEC.final), (S, lt, dur) => {
   const crowd = seg(S, barAt(b0 + 2), barAtF(b0 + 3.5));
   if (crowd > 0) seats(960, 1560 - 120 * easeOut(crowd), 11, 3, crowd, S);
   const grow = easeIn(seg(S, barAt(b0), barAt(b0 + 4)));
-  const u = lerp(15, 26, grow), hop = Math.abs(Math.sin(bpOf(S) * Math.PI)) * (lt > dur / 2 ? 1 : .4);
-  snip(960, 1190 - hop * 50, u, { eyes: grow > .6 ? 'star' : 'determined', mouth: grow > .6 ? 'open' : 'grin', aL: 1.2 + .2 * pulse(S, 4), aR: 1.2 + .2 * pulse(S, 4), cutL: frac(bpOf(S) * 2) < .25 ? 0 : 1, cutR: frac(bpOf(S) * 2) < .25 ? 0 : 1, glow: .4 + .8 * grow });
+  const u = lerp(15, 26, grow), hop = Math.abs(Math.sin(bpOf(REAL_S) * Math.PI)) * (lt > dur / 2 ? 1 : .4);
+  snip(960, 1190 - hop * 50, u, { eyes: grow > .6 ? 'star' : 'determined', mouth: grow > .6 ? 'open' : 'grin', aL: 1.2 + .2 * pulse(REAL_S, 4), aR: 1.2 + .2 * pulse(REAL_S, 4), cutL: frac(bpOf(REAL_S) * 2) < .25 ? 0 : 1, cutR: frac(bpOf(REAL_S) * 2) < .25 ? 0 : 1, glow: .4 + .8 * grow });
   if (crowd > 0) fanRow(S, VERT ? 450 : 120, VERT ? 1470 : 1800, 1700 - 250 * easeOut(crowd), VERT ? 11 : 13, VERT ? 7 : 12, 120, { cheer: true, hop: .8 });
   if (lt > dur * .5) confetti(S, barAt(b0 + 2), 60, [-100, -100, 2120, 2120]);
   if (flare > 0) paint(ellPts(960, 900, 150 + 2200 * easeIn(flare), 150 + 2200 * easeIn(flare), 40), { wash: '#FFF3D6', washOp: 255 * seg(flare, 0, .6), ink: null });
