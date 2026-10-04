@@ -19,7 +19,7 @@ shot(barAt(6), barAt(9), (S, lt, dur) => {
   const wall = k < .5 ? mixCol('#A99BC4', '#8A5F86', k * 2) : mixCol('#8A5F86', PAL.night, (k - .5) * 2);
   const viewers = Math.round(lerp(2, 46, easeOut(seg(k, 0, .45))) - 30 * seg(k, .55, 1));
   deskScene(S, { clock: 9 + k * 9, viewers, wall, sky, skyOp: 255 * (1 - seg(k, .75, 1)), sun: [lerp(560, 760, k), lerp(410, 600, k), 255 * (1 - seg(k, .35, .6))],
-    eyes: pulse(S, 5) > .6 ? 'happy' : 'open', mouth: talking(S), aL: -1.1, aR: .3 + 1.0 * pulse(S, 3), glow: .6, night: seg(k, .45, .9), cat: k < .6 ? { pose: 'sit', eyes: 'open', lookX: -.5 } : { pose: 'loaf' },
+    eyes: pulse(REAL_S, 5) > .6 ? 'happy' : 'open', mouth: talking(S), aL: -1.1, aR: .3 + 1.0 * pulse(REAL_S, 3), glow: .6, night: seg(k, .45, .9), cat: k < .6 ? { pose: 'sit', eyes: 'open', lookX: -.5 } : { pose: 'loaf' },
     content: (sx, sy, w, h) => { for (let i = 0; i < 3; i++) paint(rrPts(sx + 30, sy + 100 + i * 40, 140 + hash(i + Math.floor(S * 2)) * 180, 20, 10), { wash: PAL.cream, washOp: 150, ink: null }); } });
   tape(subPath(PILE, .15 + .85 * easeOut(k)), 84, { labels: { every: 2, fmt: f => hms(f * 10800) } });
   if (S >= barAt(6)) sfx('LIVE!', VERT ? 1000 : 1150, VERT ? 610 : 640, 120, PAL.red, S - barAt(6), { life: 1.5, rot: -.08 });
@@ -32,7 +32,7 @@ shot(barAt(9), barAt(12), (S, lt, dur) => {
   camBegin(kf(S, [[barAt(9), 960], [barAt(11), 980], [barAt(12), 1000]]), kf(S, [[barAt(9), 900], [barAt(11), 930], [barAt(12) - .3, 1230]]),
     kf(S, [[barAt(9), 1.25], [barAt(11), 1.2], [barAt(12) - .3, 1.3]]) * VZ);
   const gotIt = S > idea && S < into + .6;
-  deskScene(S, { clock: 19.5 + lt * .3, viewers: 16, cat: gotIt ? { pose: 'sit', eyes: 'wide', lookX: -.6 } : { pose: 'loaf' }, eyes: gotIt ? 'star' : 'open', mouth: gotIt ? 'grin' : talking(S), aL: gotIt ? 1.2 : -1.1, aR: gotIt ? 1.3 : .2 + .6 * pulse(S, 3), glow: .6 });
+  deskScene(S, { clock: 19.5 + lt * .3, viewers: 16, cat: gotIt ? { pose: 'sit', eyes: 'wide', lookX: -.6 } : { pose: 'loaf' }, eyes: gotIt ? 'star' : 'open', mouth: gotIt ? 'grin' : talking(S), aL: gotIt ? 1.2 : -1.1, aR: gotIt ? 1.3 : .2 + .6 * pulse(REAL_S, 3), glow: .6 });
   // the gold moment rides the tape: its position along the pile goes from the monitor (0) to .40, then more tape covers it
   const ride = seg(S, outOf, barAt(11) + BEAT * 3), f = lerp(.0, .40, easeOut(ride));
   const shine = 1 - seg(S, barAt(11) + BEAT * 2, barAt(12));
@@ -51,7 +51,7 @@ shot(barAt(9), barAt(12), (S, lt, dur) => {
     paint(rrPts(-120, -85, 240, 170, 70), { wash: PAL.gold, ink: PAL.ink, sw: 1.2 });
     paint([[-60, 70], [-10, 70], [-120, 140]], { wash: PAL.gold, ink: PAL.ink, sw: 1.2 });
     paint(rectPts(-70, 55, 70, 30), { wash: PAL.gold, ink: null });
-    paint(starPts(0, 0, 58 + 6 * pulse(S, 4), .45, 5), { wash: PAL.cream, ink: PAL.ink, sw: 1 });
+    paint(starPts(0, 0, 58 + 6 * pulse(REAL_S, 4), .45, 5), { wash: PAL.cream, ink: PAL.ink, sw: 1 });
     pop();
     for (let i = 0; i < 6; i++) { const a = i / 6 * TAU + S * 2, r = 170 * sc; paint(starPts(bx + Math.cos(a) * r, by + Math.sin(a) * r * .8, 14 * sc, .4, 4), { wash: PAL.cream, ink: null }); }
   }
@@ -75,7 +75,7 @@ shot(barAt(12), barAt(15), (S, lt, dur) => {
     const y = LAYER_Y0 + i * LAYER_DY, dir = i % 2 ? 1 : -1, off = dir * lt * 40 + hash(i) * 200;
     const path = []; for (let j = 0; j <= 10; j++) { const x = -400 + j * 280 + off; path.push([x, y + 18 * Math.sin(j * 1.3 + i)]); }
     const isGold = i === GOLD_ROW, t0 = i * 900;
-    tape(path, 92, { seed: i * 13, hi: isGold ? [.47, .53] : null, glow: isGold ? .35 + .55 * pulse(S, 3) : 0, labels: { every: 5, fmt: f => hms(t0 + f * 1800), alpha: .6 } });
+    tape(path, 92, { seed: i * 13, hi: isGold ? [.47, .53] : null, glow: isGold ? .35 + .55 * pulse(REAL_S, 3) : 0, labels: { every: 5, fmt: f => hms(t0 + f * 1800), alpha: .6 } });
   }
   // pebbles between the layers
   for (let i = 0; i < 40; i++) paint(ellPts(hash(i) * 2000 - 40, LAYER_Y0 + 75 + Math.floor(hash(i + 3) * 11) * LAYER_DY + (hash(i + 5) - .5) * 30, 10 + hash(i + 7) * 12, 7 + hash(i + 8) * 8, 10), { wash: '#8A6A50', washOp: 200, ink: null });
@@ -142,14 +142,14 @@ shot(barAt(18), barAt(21), (S, lt, dur) => {
   camBegin(kf(S, [[barAt(18), 960], [find, 980], [BB(20, 2), 1000], [barAt(21), 1000]]), kf(S, [[barAt(18), 1330], [find, 1300], [BB(20, 2), 1150], [barAt(21), 960]]),
     kf(S, [[barAt(18), 1.7], [find, 1.6], [BB(20, 2), 1.3], [barAt(21), 1.1]]) * VZ);
   deskScene(S, { clock: 23.2 + lt * .1, viewers: 0, eyes: 'closed', mouth: 'o', slump: .9, emote: 'zzz' });
-  tape(PILE, 84, { hi: [.36, .44], glow: .25 + .5 * pulse(S, 3) });
+  tape(PILE, 84, { hi: [.36, .44], glow: .25 + .5 * pulse(REAL_S, 3) });
   // Snip: walks in from the right, sniffing, stops at the glow, looks down, then at us, snips twice, leaps
   let x, y = 1360, o = { eyes: 'normal', mouth: 'smile', aL: -.3, aR: -.3, cutL: .8, cutR: .8, lookY: .6, lookX: -.4 };
   if (S < find) { x = kf(S, [[barAt(18), 1560], [find, 1010]], x => x); o = { ...o, walk: S * 14, dy: -.15 * Math.abs(Math.sin(S * 7)), flip: true }; }
-  else if (S < BB(20, 0)) { x = 1010; o = { ...o, eyes: 'wide', mouth: 'o', lookY: 1, lookX: -.6, glow: .4 * pulse(S, 3), sq: -.1 * pulse(S, 6) }; }
+  else if (S < BB(20, 0)) { x = 1010; o = { ...o, eyes: 'wide', mouth: 'o', lookY: 1, lookX: -.6, glow: .4 * pulse(REAL_S, 3), sq: -.1 * pulse(REAL_S, 6) }; }
   else if (S < jump) {
     x = 1010; const closing = (S > BB(20, 1) && S < BB(20, 1) + .14) || (S > BB(20, 2) && S < BB(20, 2) + .14);
-    o = { eyes: 'determined', mouth: closing ? 'open' : 'grin', aL: .9, aR: .9, cutL: closing ? 0 : 1, cutR: closing ? 0 : 1, glow: .5, sq: -.15 * pulse(S, 8), lookX: .3 };
+    o = { eyes: 'determined', mouth: closing ? 'open' : 'grin', aL: .9, aR: .9, cutL: closing ? 0 : 1, cutR: closing ? 0 : 1, glow: .5, sq: -.15 * pulse(REAL_S, 8), lookX: .3 };
   } else {
     const j = seg(S, jump, barAt(21));
     x = lerp(1010, 1250, j); y = lerp(1360, 830, j) - Math.sin(j * Math.PI) * 260;

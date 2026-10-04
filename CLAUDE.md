@@ -3,7 +3,7 @@
 Watercolor music video for FlareClip's song "Clip It". Every frame is painted by p5.js 2 + p5.brush (WebGL) in
 headless Chrome (puppeteer-core) and encoded with ffmpeg. One 1920×1920 "world" is framed two ways:
 vertical 9:16 (world x 420–1500, full height) and horizontal 16:9 (world y 420–1500, full width).
-Owner: Guo Qishao (GitHub guoqishao-design). The user writes in Chinese; reply in Chinese. Code, comments and commits in English.
+Maintainer: FlareClip (GitHub guoqishao-design). The user writes in Chinese; reply in Chinese. Code, comments and commits in English.
 
 ## Commands
 
@@ -20,8 +20,9 @@ python3 tools/cuts.py                        # after editing assets/edits.json: 
 - Linux uses SwiftShader (CPU): a full frame costs seconds to a minute, so check with `--sheet` at `--scale=0.5`,
   never full renders. Run long sheets in the background (`setsid nohup … &`) and poll; tool calls time out at 10 min.
   `ms/frame` printed by `--sheet` is misleading (GPU work is flushed later).
-- The owner renders final videos on an Apple Silicon Mac (Metal). Frames cache in `out/frames-<edit>-<fmt>/` and are
-  reused on re-run: after any visual change, `rm -rf out/frames-*` before re-rendering.
+- Final videos render on an Apple Silicon Mac (Metal). Frames cache in `out/cache/<fingerprint>/frames-<edit>-<fmt>/`.
+  Source, audio, dependency lock, fps and scale changes create a new cache automatically. Preserve older caches.
+  Outputs default to `out/renders/<fingerprint>/`; use `--outdir=out/releases/v1.1.0` for a release.
 - `assets/clipit.mp3` (the full song) is not in Git; only the cut mp3s are. `tools/cuts.py` needs the full song.
 
 ## Time model (read this before touching timing)
@@ -30,7 +31,7 @@ python3 tools/cuts.py                        # after editing assets/edits.json: 
   Helpers in `src/core.js`: `barAt(n)` (integer bars only), `beatAt(i)`, `bpOf(S)`, `barOf(S)` (fractional),
   `pulse(S)`; `BB(n, k)` in scenes.js = beat k of bar n. `barAtF(f)` (timeline.js) for fractional bars.
 - **Edit time**: each cut in `CUTS` (from `assets/edits.json`) maps edit seconds → song seconds (`editToSong`).
-  Cuts: 15s (hook + chorus lines 1–3 + outro), 30s (hook + pre-chorus + chorus + outro), 60s, 2min.
+  Cuts: 15s (hook + chorus lines 1–4 + final chorus line + 2-second end card), 30s (hook + pre-chorus + chorus + 2-second end card), 60s, 2min.
 - **Design time**: shots were authored on a design bar grid. `WARP` in `src/timeline.js` maps real song bars →
   design bars piecewise, so each shot plays exactly while its lyric is sung. To move a shot, edit `WARP`, not the shot.
   Inside a shot, `S` is design time; the real song time is `REAL_S` (use it for beat pulses if a shot is stretched).
@@ -66,7 +67,7 @@ python3 tools/cuts.py                        # after editing assets/edits.json: 
 
 ## Conventions
 
-- Commits: author "Guo Qishao <guoqishao@gmail.com>"; small, descriptive English messages.
+- Commits: author "FlareClip <support@flareclip.com>"; small, descriptive English messages.
 - Don't push to `main` unless the owner asks; use a branch. Don't commit `out/`, `node_modules/`, or the full song.
 - Licensing: code MIT; song, lyrics, FlareClip brand, Snip, Mochi, previews and videos are all rights reserved
   (`ASSETS_LICENSE.md`). The song was generated on a paid Mureka plan.
