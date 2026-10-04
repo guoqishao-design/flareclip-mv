@@ -22,6 +22,7 @@ Matching SRT captions, SHA-256 checksums and a release manifest identify the med
 - Illustrative view and clip counts are identified as part of the animated story.
 - Source-, audio-, dependency- and parameter-aware frame caches prevent stale frames from entering new renders.
 - Range encoding trims both frames and audio to the requested interval. Incomplete JPEGs are rendered again.
+- Audio is padded only to the final frame boundary, so a slightly shorter audio stream cannot drop the last video frame.
 - Completed outputs can be resumed after checksum validation; unrelated existing MP4s require explicit overwrite.
 - Node.js 22.12+ is required by the locked Puppeteer version.
 

@@ -109,7 +109,7 @@ async function encode(fmt) {
   const tmp = out.slice(0, -extname(out).length) + '.partial.mp4';
   await run('ffmpeg', ['-y', '-loglevel', 'error', '-stats', '-framerate', String(fps), '-start_number', String(range.start), '-i', `${cacheDir(fmt)}/f%05d.jpg`, '-ss', String(range.offset), '-i', AUDIO,
     '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(fps),
-    '-frames:v', String(range.count), '-t', String(range.duration), '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', '-shortest', tmp]);
+    '-frames:v', String(range.count), '-af', 'apad', '-t', String(range.duration), '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', tmp]);
   renameSync(tmp, out);
   writeFileSync(out + '.json', JSON.stringify({ fingerprint, edit, fmt, fps, scale, startFrame: range.start, endFrame: range.end,
     sha256: createHash('sha256').update(readFileSync(out)).digest('hex') }, null, 2));
