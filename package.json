@@ -36,7 +36,7 @@
   "dependencies": {
     "@fontsource/fredoka": "^5.0.0",
     "@fontsource/permanent-marker": "^5.0.0",
-    "p5": "2.3.4",
+    "p5": "2.4.0",
     "puppeteer-core": "^25.11.0"
   }
 }
